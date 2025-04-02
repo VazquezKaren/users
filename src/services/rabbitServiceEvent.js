@@ -3,18 +3,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const RABBITMQ_URL = process.env.RABBIT_HOST;
+const RABBITMQ_URL = process.env.RABBITMQ_URL;
 const RABBITMQ_EXCHANGE = "user_event";
 const RABBITMQ_ROUTING_KEY = "user.created";
 
 export async function userCreatedEvent(user) {
-  const connection = await amqp.connect({
-    protocol: "amqp",
-    hostname: process.env.RABBIT_HOST,
-    port:5672,
-    username: process.env.RABBIT_USER,
-    password: process.env.RABBIT_PASS
-  });
+  const connection = await amqp.connect(RABBITMQ_URL);
   const channel = await connection.createChannel();
 
   const exchange = "user_event";
